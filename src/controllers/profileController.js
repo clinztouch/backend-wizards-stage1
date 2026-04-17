@@ -101,17 +101,27 @@ exports.createProfile = async (req, res) => {
 
     //  Duplicate race condition fallback
     if (err.code === 11000) {
-      const existing = await Profile.findOne({
-        name: req.body.name.toLowerCase()
-      });
+  const existing = await Profile.findOne({
+    name: req.body.name.toLowerCase()
+  });
 
-      return res.status(200).json({
-        status: "success",
-        message: "Profile already exists",
-        data: existing
-      });
+  return res.status(200).json({
+    status: "success",
+    message: "Profile already exists",
+    data: {
+      id: existing.id,
+      name: existing.name,
+      gender: existing.gender,
+      gender_probability: existing.gender_probability,
+      sample_size: existing.sample_size,
+      age: existing.age,
+      age_group: existing.age_group,
+      country_id: existing.country_id,
+      country_probability: existing.country_probability,
+      created_at: existing.created_at
     }
-
+  });
+}
 
 
     //  500 fallback
